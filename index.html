@@ -264,7 +264,7 @@
                         <!-- Level 1: Hangman / Wheel of Words -->
                         <div id="lvl-badge-1" class="p-3 rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 text-center transition-all">
                             <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400 block">Lvl 1 • EASY</span>
-                            <span class="text-sm md:text-base font-extrabold text-white block"><i class="fa-solid fa-spell-check mr-1"></i>HANGMAN</span>
+                            <span class="text-sm md:text-base font-extrabold text-white block"><i class="fa-solid fa-dharmachakra mr-1"></i>WHEEL / HANGMAN</span>
                             <div id="lvl-dots-1" class="flex justify-center gap-1 mt-2"></div>
                         </div>
                         <!-- Level 2: Jeopardy Board -->
@@ -354,44 +354,60 @@
                                 </div>
                             </div>
 
-                            <!-- Question Prompt -->
-                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-5 md:p-6 mb-5 relative">
-                                <div class="flex items-center justify-between gap-2 mb-2">
-                                    <p id="q-instruction" class="text-xs md:text-sm uppercase tracking-wider text-amber-400 font-bold">
-                                        Complete the sentence by speaking the correct answer:
-                                    </p>
-                                    <span id="question-prize-tag" class="px-3 py-0.5 rounded-lg bg-amber-500/20 text-amber-300 font-extrabold text-xs border border-amber-400/30">
-                                        +$200
-                                    </span>
-                                </div>
-                                <h2 id="q-text" class="text-2xl md:text-3xl font-bold text-white leading-snug">
-                                    Loading question...
-                                </h2>
-                            </div>
-
-                            <!-- FORMAT 1 WIDGET: HANGMAN / WHEEL OF FORTUNE (Level 1) -->
-                            <div id="hangman-stage" class="hidden mb-6 bg-slate-950/60 border border-emerald-500/30 rounded-2xl p-5 space-y-4">
-                                <div class="flex flex-wrap items-center justify-between gap-2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-400">
-                                            <i class="fa-solid fa-puzzle-piece mr-1"></i> Hangman Mystery Board:
-                                        </span>
-                                        <span id="hangman-lives" class="text-rose-400 font-bold text-sm">❤️❤️❤️❤️❤️</span>
+                            <!-- FORMAT 1 WIDGET: HANGMAN / WHEEL OF FORTUNE (Level 1 - NO MULTIPLE CHOICE OPTIONS) -->
+                            <div id="hangman-stage" class="hidden mb-6 bg-gradient-to-b from-slate-950 via-emerald-950/20 to-slate-950 border-2 border-emerald-500/40 rounded-2xl p-5 space-y-5 shadow-inner">
+                                <!-- Top Bar: Wheel Spinner + Lives + Clues -->
+                                <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
+                                    <div class="flex items-center gap-3">
+                                        <button id="wheel-spin-btn" onclick="spinWheelOfFortune()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-extrabold text-xs md:text-sm flex items-center gap-2 shadow-lg transition transform hover:scale-105">
+                                            <i id="wheel-icon" class="fa-solid fa-dharmachakra text-lg"></i> Spin the Wheel!
+                                        </button>
+                                        <div>
+                                            <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Current Wheel Wedge:</span>
+                                            <span id="wheel-wedge-display" class="text-sm md:text-base font-extrabold text-amber-300">$200 per letter</span>
+                                        </div>
                                     </div>
-                                    <button onclick="revealRandomHangmanLetter()" class="px-3 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition">
-                                        <i class="fa-solid fa-lightbulb mr-1"></i> Free Letter Clue
-                                    </button>
+
+                                    <div class="flex items-center gap-3">
+                                        <div class="text-right">
+                                            <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Chances Left:</span>
+                                            <span id="hangman-lives" class="text-rose-400 font-bold text-sm tracking-widest">❤️❤️❤️❤️❤️</span>
+                                        </div>
+                                        <button onclick="revealRandomHangmanLetter()" class="px-3 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition" title="Reveal 1 letter on the board">
+                                            <i class="fa-solid fa-lightbulb mr-1"></i> Free Letter
+                                        </button>
+                                    </div>
                                 </div>
 
-                                <!-- Word Slots -->
-                                <div id="hangman-word-slots" class="flex flex-wrap items-center justify-center gap-2 py-3 min-h-[68px]"></div>
+                                <!-- TV Puzzle Board (Word Slots) -->
+                                <div class="bg-emerald-950/40 border-2 border-emerald-500/30 rounded-2xl p-4 md:p-6 shadow-inner">
+                                    <span class="text-[11px] uppercase tracking-widest text-emerald-300 font-bold block text-center mb-3">
+                                        <i class="fa-solid fa-tv mr-1"></i> Wheel of Fortune Puzzle Board (No Multiple Choice!)
+                                    </span>
+                                    <div id="hangman-word-slots" class="flex flex-wrap items-center justify-center gap-2.5 py-2 min-h-[72px]"></div>
+                                </div>
 
-                                <!-- A-Z Letter Keyboard for Classroom Guessing -->
-                                <div>
-                                    <p class="text-xs text-slate-400 text-center mb-2">
-                                        Students can call out letters to reveal the word OR speak the full word into the microphone at any time!
+                                <!-- A-Z Letter Keyboard & Solve Puzzle Controls -->
+                                <div class="space-y-3">
+                                    <p class="text-xs text-slate-300 text-center font-medium">
+                                        🗣️ <strong>How to Play:</strong> Spin the wheel, call out a letter (A–Z), OR shout the full hidden word/phrase into the microphone!
                                     </p>
                                     <div id="hangman-keyboard" class="flex flex-wrap justify-center gap-1.5"></div>
+                                    
+                                    <!-- Solve Puzzle Action Bar for Classroom Projection -->
+                                    <div class="pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+                                        <span class="text-xs text-slate-400">
+                                            Did the class shout the complete word out loud?
+                                        </span>
+                                        <div class="flex items-center gap-2">
+                                            <button onclick="toggleVoiceRecognition()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs flex items-center gap-1.5 shadow transition">
+                                                <i class="fa-solid fa-microphone"></i> Speak Full Word
+                                            </button>
+                                            <button onclick="solveWheelPuzzleDirectly()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs flex items-center gap-1.5 shadow transition" title="Click if the class shouted the correct word out loud!">
+                                                <i class="fa-solid fa-bolt"></i> Class Shouted It! (Reveal & Validate)
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1181,12 +1197,12 @@
         let currentFontScale = 0;
         let lastStateSnapshot = null;
         let tvShowMoney = 0;
-        let currentQuestionPrize = 200;
-
-        // Hangman State (Level 1)
+        // Hangman / Wheel of Fortune State (Level 1)
         let hangmanTargetWord = "";
         let hangmanGuessedLetters = new Set();
         let hangmanLives = 5;
+        let currentWheelLetterValue = 200;
+        const wheelWedges = [100, 150, 200, 250, 300, 400, 500, 750, 1000];
 
         // Jeopardy State (Level 2)
         let jeopardyTilesOpened = new Set();
@@ -1323,77 +1339,65 @@
 
         function updateProgressUI() {
             const levelNames = {
-                1: "Easy (Hangman Mystery)",
+                1: "Easy (Wheel of Fortune)",
                 2: "Medium (Jeopardy! Board)",
                 3: "Hard (Buzzer Tag Showdown)",
                 4: "Expert (Millionaire Hot Seat)"
             };
             const showBadges = {
-                1: { text: "🎪 Show 1 • Hangman Word Mystery", cls: "px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-xs md:text-sm border border-emerald-500/40 uppercase tracking-wider" },
+                1: { text: "🎡 Show 1 • Wheel of Fortune & Hangman", cls: "px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-xs md:text-sm border border-emerald-500/40 uppercase tracking-wider" },
                 2: { text: "📺 Show 2 • Jeopardy! TV Board", cls: "px-3.5 py-1.5 rounded-full bg-cyan-500/20 text-cyan-300 font-extrabold text-xs md:text-sm border border-cyan-500/40 uppercase tracking-wider" },
                 3: { text: "⚡ Show 3 • Buzzer Tag Showdown", cls: "px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-300 font-extrabold text-xs md:text-sm border border-amber-500/40 uppercase tracking-wider" },
                 4: { text: "👑 Show 4 • Millionaire Hot Seat", cls: "px-3.5 py-1.5 rounded-full bg-rose-500/20 text-rose-300 font-extrabold text-xs md:text-sm border border-rose-500/40 uppercase tracking-wider" }
             };
-            const levelColors = {
-                1: "border-emerald-500 bg-emerald-500/15",
-                2: "border-cyan-500 bg-cyan-500/15",
-                3: "border-amber-500 bg-amber-500/15",
-                4: "border-rose-500 bg-rose-500/15"
-            };
-
-            for (let lvl = 1; lvl <= 4; lvl++) {
-                const badge = document.getElementById(`lvl-badge-${lvl}`);
-                const dotsContainer = document.getElementById(`lvl-dots-${lvl}`);
-                dotsContainer.innerHTML = '';
-
-                for (let i = 1; i <= 5; i++) {
-                    const dot = document.createElement('span');
-                    const filled = i <= levelProgress[lvl];
-                    dot.className = `w-3 h-3 rounded-full transition-all ${
-                        filled ? 'bg-emerald-400 shadow shadow-emerald-400/50 scale-110' : 'bg-slate-700'
-                    }`;
-                    dotsContainer.appendChild(dot);
-                }
-
-                if (lvl === currentLevel) {
-                    badge.className = `p-3 rounded-2xl border-2 ${levelColors[lvl]} text-center transition-all transform scale-105 shadow-lg`;
-                } else if (levelProgress[lvl] >= 5) {
-                    badge.className = "p-3 rounded-2xl border-2 border-emerald-500/60 bg-emerald-950/30 text-center opacity-90 transition-all";
-                } else {
-                    badge.className = "p-3 rounded-2xl border-2 border-slate-800 bg-slate-800/40 text-center opacity-50 transition-all";
-                }
-            }
-
-            const formatBadge = document.getElementById('show-format-badge');
-            if (formatBadge) {
-                formatBadge.textContent = showBadges[currentLevel].text;
-                formatBadge.className = showBadges[currentLevel].cls;
-            }
-
-            document.getElementById('tv-score').textContent = `$${tvShowMoney.toLocaleString()}`;
-            document.getElementById('q-status-counter').textContent =
-                `Level ${levelNames[currentLevel]}: ${levelProgress[currentLevel]} of 5 Correct`;
-        }
-
-        // ==================== LEVEL 1: HANGMAN MYSTERY ====================
+        // ==================== LEVEL 1: WHEEL OF FORTUNE / HANGMAN MYSTERY ====================
         function initHangmanForQuestion(q) {
             // Clean primary answer for letter board (if "mouse / rat", use "MOUSE")
             let rawAns = q.answerDisplay.split('/')[0].trim().toUpperCase();
             hangmanTargetWord = rawAns;
             hangmanGuessedLetters = new Set();
             hangmanLives = 5;
+            currentWheelLetterValue = 200;
 
-            // Automatically reveal spaces or hyphens
+            // Automatically reveal spaces or hyphens only (no multiple choice options!)
             for (let ch of hangmanTargetWord) {
                 if (ch === ' ' || ch === '-') hangmanGuessedLetters.add(ch);
             }
-            // Pre-reveal 1st letter on longer phrases to keep pace snappy
-            const lettersOnly = hangmanTargetWord.replace(/[^A-Z]/g, '');
-            if (lettersOnly.length >= 6) {
-                hangmanGuessedLetters.add(lettersOnly[0]);
+
+            const wedgeEl = document.getElementById('wheel-wedge-display');
+            if (wedgeEl) {
+                wedgeEl.textContent = `$${currentWheelLetterValue} per letter`;
             }
 
             renderHangmanUI();
+        }
+
+        function spinWheelOfFortune() {
+            if (isAnswered) return;
+            const wedgeEl = document.getElementById('wheel-wedge-display');
+            const iconEl = document.getElementById('wheel-icon');
+            if (iconEl) iconEl.classList.add('fa-spin');
+
+            let ticks = 0;
+            const spinInterval = setInterval(() => {
+                playSound('spin');
+                const randVal = wheelWedges[Math.floor(Math.random() * wheelWedges.length)];
+                wedgeEl.textContent = `$${randVal} per letter`;
+                ticks++;
+                if (ticks > 9) {
+                    clearInterval(spinInterval);
+                    currentWheelLetterValue = randVal;
+                    currentQuestionPrize = randVal;
+                    document.getElementById('question-prize-tag').textContent = `+$${randVal}/letter`;
+                    wedgeEl.textContent = `🎯 $${randVal} per letter! Call a letter!`;
+                    if (iconEl) iconEl.classList.remove('fa-spin');
+                }
+            }, 80);
+        }
+
+        function solveWheelPuzzleDirectly() {
+            if (isAnswered) return;
+            evaluateAnswer(hangmanTargetWord, "Wheel of Fortune Solved by Class");
         }
 
         function renderHangmanUI() {
@@ -1406,12 +1410,13 @@
             for (let ch of hangmanTargetWord) {
                 if (ch === ' ') {
                     const spacer = document.createElement('span');
-                    spacer.className = "w-4 inline-block";
+                    spacer.className = "w-6 inline-block";
                     slotsEl.appendChild(spacer);
                 } else {
+                    const revealed = hangmanGuessedLetters.has(ch);
                     const tile = document.createElement('span');
-                    tile.className = "letter-tile";
-                    tile.textContent = hangmanGuessedLetters.has(ch) ? ch : "";
+                    tile.className = `letter-tile transition-all ${revealed ? 'bg-amber-400 text-slate-950 border-amber-200 scale-105' : 'bg-slate-900 text-white border-emerald-400'}`;
+                    tile.textContent = revealed ? ch : "";
                     slotsEl.appendChild(tile);
                 }
             }
@@ -1419,17 +1424,24 @@
             const kbEl = document.getElementById('hangman-keyboard');
             kbEl.innerHTML = '';
             const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+            const vowels = new Set(['A', 'E', 'I', 'O', 'U']);
+
             alphabet.forEach(letter => {
                 const used = hangmanGuessedLetters.has(letter);
                 const inWord = hangmanTargetWord.includes(letter);
+                const isVowel = vowels.has(letter);
                 const btn = document.createElement('button');
                 btn.disabled = used || isAnswered;
                 if (used) {
-                    btn.className = `w-8 h-9 rounded-lg font-extrabold text-xs border ${
-                        inWord ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-900 text-slate-600 border-slate-800'
+                    btn.className = `w-9 h-10 rounded-xl font-extrabold text-sm border ${
+                        inWord ? 'bg-emerald-500 text-slate-950 border-emerald-300 shadow' : 'bg-slate-900/80 text-slate-600 border-slate-800'
                     }`;
                 } else {
-                    btn.className = "w-8 h-9 rounded-lg bg-slate-800 hover:bg-indigo-600 text-white font-extrabold text-xs border border-slate-700 transition";
+                    btn.className = `w-9 h-10 rounded-xl font-extrabold text-sm border transition transform hover:-translate-y-0.5 ${
+                        isVowel
+                            ? 'bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border-amber-500/40'
+                            : 'bg-slate-800 hover:bg-emerald-500 text-white hover:text-slate-950 border-slate-700'
+                    }`;
                 }
                 btn.textContent = letter;
                 btn.onclick = () => guessHangmanLetter(letter);
@@ -1443,18 +1455,33 @@
 
             if (hangmanTargetWord.includes(letter)) {
                 playSound('spin');
+                // Count how many times this letter appears in the puzzle and award Wheel money!
+                const matches = hangmanTargetWord.split('').filter(ch => ch === letter).length;
+                const bonus = matches * currentWheelLetterValue;
+                tvShowMoney += bonus;
+                updateProgressUI();
+
+                const wedgeEl = document.getElementById('wheel-wedge-display');
+                if (wedgeEl) {
+                    wedgeEl.textContent = `✅ ${matches} "${letter}" found! (+$${bonus})`;
+                }
+
                 renderHangmanUI();
                 // Check if all letters are revealed
                 const allRevealed = hangmanTargetWord.split('').every(ch => hangmanGuessedLetters.has(ch));
                 if (allRevealed) {
-                    evaluateAnswer(hangmanTargetWord, "Hangman Word Completed");
+                    evaluateAnswer(hangmanTargetWord, "Wheel of Fortune Completed");
                 }
             } else {
                 playSound('wrong');
                 hangmanLives = Math.max(0, hangmanLives - 1);
+                const wedgeEl = document.getElementById('wheel-wedge-display');
+                if (wedgeEl) {
+                    wedgeEl.textContent = `❌ No "${letter}" on the board!`;
+                }
                 renderHangmanUI();
                 if (hangmanLives === 0) {
-                    evaluateAnswer("out of lives", "Hangman Out of Lives");
+                    evaluateAnswer("out of lives", "Out of Chances");
                 }
             }
         }
@@ -1729,6 +1756,7 @@
             const hangmanStage = document.getElementById('hangman-stage');
             const millionaireBar = document.getElementById('millionaire-lifelines');
             const buzzerTimerStage = document.getElementById('buzzer-timer-stage');
+            const container = document.getElementById('q-options-container');
 
             // Toggle Level-Specific Game Show Widgets
             if (currentLevel === 1) {
@@ -1736,28 +1764,34 @@
                 hangmanStage.classList.remove('hidden');
                 millionaireBar.classList.add('hidden');
                 buzzerTimerStage.classList.add('hidden');
+                // HIDE Multiple Choice options completely in Level 1 (Wheel of Fortune Mode!)
+                container.innerHTML = '';
+                container.classList.add('hidden');
                 initHangmanForQuestion(currentQuestion);
+                return;
             } else if (currentLevel === 3) {
                 hangmanStage.classList.add('hidden');
                 millionaireBar.classList.add('hidden');
                 buzzerTimerStage.classList.remove('hidden');
+                container.classList.remove('hidden');
                 startBuzzerTimer();
             } else if (currentLevel === 4) {
                 clearBuzzerTimer();
                 hangmanStage.classList.add('hidden');
                 millionaireBar.classList.remove('hidden');
                 buzzerTimerStage.classList.add('hidden');
+                container.classList.remove('hidden');
                 updateLifelineButtons();
             } else {
                 clearBuzzerTimer();
                 hangmanStage.classList.add('hidden');
                 millionaireBar.classList.add('hidden');
                 buzzerTimerStage.classList.add('hidden');
+                container.classList.remove('hidden');
             }
 
-            // Shuffle options for display
+            // Shuffle options for display (Levels 2, 3, and 4 only)
             const shuffled = [...currentQuestion.options].sort(() => Math.random() - 0.5);
-            const container = document.getElementById('q-options-container');
             container.innerHTML = '';
 
             shuffled.forEach((opt, idx) => {
