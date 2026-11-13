@@ -326,19 +326,34 @@
 
                         <!-- STAGE A: JEOPARDY TV BOARD (Visible at start of each Level 2 turn) -->
                         <div id="jeopardy-board-stage" class="hidden mb-6 bg-blue-950/60 border-2 border-blue-500/50 rounded-2xl p-5 shadow-inner">
-                            <div class="flex items-center justify-between mb-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                                 <h3 class="text-lg md:text-xl font-extrabold text-amber-300 tracking-wide uppercase">
-                                    <i class="fa-solid fa-tv mr-2"></i>Jeopardy! Pick a Category & Dollar Value:
+                                    <i class="fa-solid fa-tv mr-2"></i>Super Jeopardy! 4x4 Board ($200 to $800):
                                 </h3>
-                                <span class="text-xs text-blue-200 font-semibold">Students: Shout the category & price!</span>
+                                <span class="text-xs text-blue-200 font-semibold">Students: Shout the category & dollar value!</span>
                             </div>
-                            <div id="jeopardy-grid" class="grid grid-cols-3 gap-3 text-center">
-                                <!-- Populated dynamically -->
+                            <div id="jeopardy-grid" class="grid grid-cols-4 gap-2.5 md:gap-3 text-center">
+                                <!-- Populated dynamically with 4 categories x 4 values (16 tiles) -->
                             </div>
                         </div>
 
                         <!-- STAGE B: ACTIVE QUESTION DISPLAY -->
                         <div id="active-question-stage">
+                            <!-- FORMAT 3 WIDGET: 15-SECOND BUZZER COUNTDOWN BAR (Level 3) -->
+                            <div id="buzzer-timer-stage" class="hidden mb-4 bg-slate-950/90 border-2 border-amber-500/50 rounded-2xl p-3.5 shadow-lg">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs md:text-sm font-extrabold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                                        <i class="fa-solid fa-stopwatch text-lg animate-spin"></i> Buzzer Tag 15s Shot Clock:
+                                    </span>
+                                    <span id="buzzer-time-display" class="text-lg md:text-xl font-extrabold text-emerald-400 font-mono">
+                                        15s
+                                    </span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
+                                    <div id="buzzer-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-1000 ease-linear" style="width: 100%;"></div>
+                                </div>
+                            </div>
+
                             <!-- Question Prompt -->
                             <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-5 md:p-6 mb-5 relative">
                                 <div class="flex items-center justify-between gap-2 mb-2">
@@ -551,13 +566,13 @@
     </div>
 
     <script>
-        // Question Bank based on Mind Flow 2 (Lessons 3C, 4B, 4C & 5B) Review Slides
-        // Includes all exact slide exercises + parallel unseen questions so level drops never repeat questions!
+        // Expanded Question Bank based on Mind Flow 2 (Lessons 3C, 4B, 4C & 5B) Review Slides
+        // Includes 16 dedicated high-challenge Jeopardy tiles (4 categories x 4 values) + rich pools for all levels!
         const questionBank = {
-            1: [ // LEVEL 1: EASY (Objects Vocabulary, Cultural Greetings & Direct Pronouns)
+            1: [ // LEVEL 1: EASY (Hangman Mystery: Everyday Objects, Cultural Greetings & Core Terms)
                 {
                     topic: "Vocabulary • Everyday Objects",
-                    instruction: "Speak the missing word based on the definition:",
+                    instruction: "Call out letters or speak the missing object based on the clue:",
                     question: "You use this tool to drive nails into wood: _______.",
                     options: ["hammer", "banjo", "teapot", "paint pot"],
                     accepted: ["hammer", "a hammer"],
@@ -566,7 +581,7 @@
                 },
                 {
                     topic: "Vocabulary • Everyday Objects",
-                    instruction: "Speak the missing word based on the definition:",
+                    instruction: "Call out letters or speak the missing object based on the clue:",
                     question: "Children love playing with this round object: _______.",
                     options: ["ball", "hammer", "banana", "teapot"],
                     accepted: ["ball", "a ball", "beach ball"],
@@ -575,7 +590,7 @@
                 },
                 {
                     topic: "Vocabulary • Everyday Objects",
-                    instruction: "Speak the missing word based on the definition:",
+                    instruction: "Call out letters or speak the missing object based on the clue:",
                     question: "You can use this container to keep paint: _______.",
                     options: ["paint pot", "teapot", "banjo", "hammer"],
                     accepted: ["paint pot", "a paint pot", "paint can", "paint bucket"],
@@ -584,7 +599,7 @@
                 },
                 {
                     topic: "Vocabulary • Everyday Objects",
-                    instruction: "Speak the missing word based on the definition:",
+                    instruction: "Call out letters or speak the missing object based on the clue:",
                     question: "You can play music using this string instrument: _______.",
                     options: ["banjo", "hammer", "teapot", "ball"],
                     accepted: ["banjo", "a banjo"],
@@ -593,7 +608,7 @@
                 },
                 {
                     topic: "Vocabulary • Everyday Objects",
-                    instruction: "Speak the missing word based on the definition:",
+                    instruction: "Call out letters or speak the missing animal based on the clue:",
                     question: "This small animal is often found in houses and likes cheese in cartoons: _______.",
                     options: ["mouse / rat", "banjo", "banana", "ball"],
                     accepted: ["mouse", "rat", "mouse or rat", "a mouse", "a rat"],
@@ -602,7 +617,7 @@
                 },
                 {
                     topic: "Vocabulary • Everyday Objects",
-                    instruction: "Speak the missing word based on the definition:",
+                    instruction: "Call out letters or speak the missing fruit based on the clue:",
                     question: "This yellow fruit is often used in smoothies: _______.",
                     options: ["banana", "ball", "teapot", "paint pot"],
                     accepted: ["banana", "a banana"],
@@ -611,7 +626,7 @@
                 },
                 {
                     topic: "Vocabulary • Everyday Objects",
-                    instruction: "Speak the missing word based on the definition:",
+                    instruction: "Call out letters or speak the missing object based on the clue:",
                     question: "You use this object to serve hot tea: _______.",
                     options: ["teapot", "paint pot", "hammer", "ball"],
                     accepted: ["teapot", "a teapot", "tea pot"],
@@ -662,18 +677,15 @@
                     accepted: ["stereotypes", "stereotype"],
                     answerDisplay: "stereotypes",
                     feedback: "Spot on! Cultural 'stereotypes' are generalized, unfair beliefs about a group of people."
-                }
-            ],
-
-            2: [ // LEVEL 2: MEDIUM (Indefinite Pronouns & Modals of Deduction from Slides)
+                },
                 {
                     topic: "Vocabulary & Indefinite Pronouns",
                     instruction: "Complete the sentence from the slide:",
                     question: "_______ is waiting for you outside the classroom.",
                     options: ["Somebody", "Anything", "Anywhere", "Stereotypes"],
                     accepted: ["somebody", "someone"],
-                    answerDisplay: "Somebody / Someone",
-                    feedback: "Correct! It's an affirmative sentence about a person, so we use 'Somebody' (or 'Someone')."
+                    answerDisplay: "somebody",
+                    feedback: "Correct! In an affirmative sentence about a person, we use 'Somebody' (or 'Someone')."
                 },
                 {
                     topic: "Vocabulary & Indefinite Pronouns",
@@ -685,101 +697,215 @@
                     feedback: "Well done! In general questions ('Did you learn...?') referring to things, we use 'anything'."
                 },
                 {
-                    topic: "Indefinite Pronouns • Context",
-                    instruction: "Speak the two pronouns in order to complete Sentence A:",
-                    question: "I heard _______ knocking on the window, but I couldn't see _______ outside.",
-                    options: ["someone / anyone", "anyone / someone", "something / anywhere", "somebody / something"],
-                    accepted: ["someone and anyone", "someone anyone", "somebody and anybody", "somebody anybody", "someone anybody", "somebody anyone"],
-                    answerDisplay: "someone (somebody) / anyone (anybody)",
-                    feedback: "Awesome! First clause is affirmative ('I heard someone/somebody'), second is negative ('couldn't see anyone/anybody')."
+                    topic: "Reflexive Pronouns • Basics",
+                    instruction: "Complete the sentence with the correct Reflexive Pronoun:",
+                    question: "I taught _______ how to play the banjo by watching videos online.",
+                    options: ["myself", "yourself", "himself", "ourselves"],
+                    accepted: ["myself"],
+                    answerDisplay: "myself",
+                    feedback: "Awesome! When the subject is 'I', the reflexive mirror pronoun is 'myself'."
                 },
                 {
-                    topic: "Indefinite Pronouns • Context",
-                    instruction: "Speak the two pronouns in order to complete Sentence B:",
-                    question: "Would you like _______ to drink? No, thanks. I don't want _______ right now.",
-                    options: ["something / anything", "anything / something", "someone / anyone", "somewhere / anywhere"],
-                    accepted: ["something and anything", "something anything"],
-                    answerDisplay: "something / anything",
-                    feedback: "Perfect! We use 'something' in polite offers ('Would you like something?') and 'anything' in negative sentences ('I don't want anything')."
-                },
-                {
-                    topic: "Indefinite Pronouns • Context",
-                    instruction: "Speak the two pronouns in order to complete Sentence D:",
-                    question: "My brother wants to go _______ special on his birthday, but he doesn't want to go _______ expensive.",
-                    options: ["somewhere / anywhere", "anywhere / somewhere", "something / anything", "someone / anyone"],
-                    accepted: ["somewhere and anywhere", "somewhere anywhere"],
-                    answerDisplay: "somewhere / anywhere",
-                    feedback: "Great! Affirmative place = 'somewhere special'; negative place ('doesn't want to go') = 'anywhere expensive'."
-                },
-                {
-                    topic: "Indefinite Pronouns • Context",
-                    instruction: "Speak the two pronouns in order to complete Sentence E:",
-                    question: "_______ left a message for you, but I don't know who it was. Did _______ call you?",
-                    options: ["Someone / anyone", "Anyone / someone", "Something / anything", "Somewhere / anywhere"],
-                    accepted: ["someone and anyone", "someone anyone", "somebody and anyone", "somebody anyone", "somebody anybody"],
-                    answerDisplay: "Someone (Somebody) / anyone",
-                    feedback: "Spot on! Affirmative start = 'Someone/Somebody left a message'; general question = 'Did anyone call you?'."
-                },
-                {
-                    topic: "Modals of Deduction • Slide Exercise",
-                    instruction: "Complete with MUST BE, MIGHT BE, or CAN'T BE:",
-                    question: "The restaurant is full of people, and there is a long line outside. It _______ very popular.",
-                    options: ["must be", "might be", "can't be", "mustn't be"],
-                    accepted: ["must be", "it must be"],
-                    answerDisplay: "must be",
-                    feedback: "Exact! A full restaurant + a long line outside is strong evidence that it is popular ('must be')."
-                },
-                {
-                    topic: "Modals of Deduction • Slide Exercise",
-                    instruction: "Complete with MUST BE, MIGHT BE, or CAN'T BE:",
-                    question: "Emma isn't answering her phone. She _______ taking a shower, but I'm not sure.",
-                    options: ["might be", "must be", "can't be", "can be"],
-                    accepted: ["might be", "she might be"],
-                    answerDisplay: "might be",
-                    feedback: "Look at the clue: 'but I'm not sure'! When we are unsure (possibility), we use 'might be'."
-                },
-                {
-                    topic: "Modals of Deduction • Slide Exercise",
-                    instruction: "Complete with MUST BE, MIGHT BE, or CAN'T BE:",
-                    question: "This _______ Mary's notebook. Her name is written on the cover!",
-                    options: ["must be", "might be", "can't be", "could be"],
-                    accepted: ["must be", "this must be"],
-                    answerDisplay: "must be",
-                    feedback: "100% logical! Since her name is written on the cover, we are certain it's hers: 'must be'."
-                },
-                {
-                    topic: "Modals of Deduction • Slide Exercise",
-                    instruction: "Complete with MUST BE, MIGHT BE, or CAN'T BE:",
-                    question: "Tom is wearing sunglasses and a winter coat on a freezing day. He _______ feeling hot!",
-                    options: ["can't be", "must be", "might be", "must"],
-                    accepted: ["can't be", "cannot be", "he can't be"],
-                    answerDisplay: "can't be",
-                    feedback: "Correct! On a freezing day in a winter coat, it is impossible that he is feeling hot ('can't be')."
-                },
-                {
-                    topic: "Modals of Deduction • Slide Exercise",
-                    instruction: "Complete with MUST BE, MIGHT BE, or CAN'T BE:",
-                    question: "The house is dark, and all the cars are gone. Nobody _______ at home.",
-                    options: ["must be", "might be", "can't be", "should be"],
-                    accepted: ["must be", "can't be"],
-                    answerDisplay: "must be",
-                    feedback: "Just like on your review slide! Dark house + all cars gone = strong conclusion ('Nobody must be at home')."
-                },
-                {
-                    topic: "Indefinite Pronouns • Slide Exercise C",
-                    instruction: "Speak the first missing word to complete Sentence C:",
-                    question: "There is _______ interesting to visit in this city, but we didn't find anyone during our trip.",
-                    options: ["somewhere / something", "anywhere", "anyone", "anybody"],
-                    accepted: ["somewhere", "something", "somewhere or something"],
-                    answerDisplay: "somewhere / something",
-                    feedback: "Great job! As shown on the review slide, both 'somewhere' (a place to visit) and 'something' (an attraction to visit) fit here!"
+                    topic: "Reflexive Pronouns • Basics",
+                    instruction: "Complete the sentence with the correct Reflexive Pronoun:",
+                    question: "Mark is talking to _______ to practice his speech before the presentation.",
+                    options: ["himself", "herself", "themselves", "each other"],
+                    accepted: ["himself"],
+                    answerDisplay: "himself",
+                    feedback: "Spot on! Mark (He) is practicing alone, so he is talking to 'himself'."
                 }
             ],
 
-            3: [ // LEVEL 3: HARD (Question Tags Matching & Reflexive Pronouns vs. Each Other)
+            2: [ // LEVEL 2: MEDIUM — 4x4 SUPER JEOPARDY BOARD (16 High-Challenge Questions + Backups)
+                // CATEGORY 1: SOME / ANY TRAPS ($200, $400, $600, $800)
                 {
-                    topic: "Question Tags • Slide Matching",
-                    instruction: "Speak the correct Question Tag to complete the sentence:",
+                    jeopardyCat: "SOME / ANY TRAPS",
+                    jeopardyVal: 200,
+                    topic: "Jeopardy $200 • Some / Any Traps",
+                    instruction: "Speak the TWO pronouns in order (Pay attention to Affirmative vs. Negative):",
+                    question: "I heard _______ knocking on the window, but it was pitch dark and I couldn't see _______ outside.",
+                    options: ["someone / anyone", "anyone / someone", "something / anywhere", "anybody / nobody"],
+                    accepted: ["someone and anyone", "someone anyone", "somebody and anybody", "somebody anybody", "someone anybody", "somebody anyone"],
+                    answerDisplay: "someone (somebody) / anyone (anybody)",
+                    feedback: "First clause is affirmative (+) = 'someone/somebody'; second has 'couldn't' (-) = 'anyone/anybody'!"
+                },
+                {
+                    jeopardyCat: "SOME / ANY TRAPS",
+                    jeopardyVal: 400,
+                    topic: "Jeopardy $400 • Some / Any Traps",
+                    instruction: "Speak the THREE missing pronouns in order (Offer vs. Negative):",
+                    question: "'Would you like _______ to drink?' — 'No, thanks. I don't want _______ right now because I didn't eat _______ for lunch.'",
+                    options: ["something / anything / anything", "anything / something / anything", "something / nothing / anything", "someone / anyone / anything"],
+                    accepted: ["something anything anything", "something and anything and anything"],
+                    answerDisplay: "something / anything / anything",
+                    feedback: "Polite offer = 'Would you like something?'; both negative clauses ('don't want' & 'didn't eat') require 'anything'!"
+                },
+                {
+                    jeopardyCat: "SOME / ANY TRAPS",
+                    jeopardyVal: 600,
+                    topic: "Jeopardy $600 • Some / Any Traps",
+                    instruction: "Find and fix the grammar trap in this sentence:",
+                    question: "My brother wants to go ANYWHERE special on his birthday, but he doesn't want to go SOMEWHERE expensive.",
+                    options: ["somewhere / anywhere", "something / anything", "someone / anyone", "anywhere / anywhere"],
+                    accepted: ["somewhere and anywhere", "somewhere anywhere"],
+                    answerDisplay: "somewhere / anywhere",
+                    feedback: "The two words were swapped! Affirmative desire = 'wants to go SOMEWHERE special'; negative = 'doesn't want to go ANYWHERE expensive'."
+                },
+                {
+                    jeopardyCat: "SOME / ANY TRAPS",
+                    jeopardyVal: 800,
+                    topic: "Jeopardy $800 • Daily Double!",
+                    instruction: "Speak the THREE pronouns in order (Place + Person + General Question):",
+                    question: "There is _______ interesting to visit in this city, and _______ left a map for us, so did _______ call the tour guide?",
+                    options: ["somewhere / someone / anyone", "anywhere / anyone / someone", "something / anyone / somebody", "somewhere / anybody / someone"],
+                    accepted: ["somewhere someone anyone", "somewhere somebody anyone", "something someone anyone", "somewhere and someone and anyone"],
+                    answerDisplay: "somewhere / someone / anyone",
+                    feedback: "1st is affirmative place ('somewhere'), 2nd is affirmative person ('someone'), 3rd is a general question ('Did anyone call...?')!"
+                },
+
+                // CATEGORY 2: DEDUCTIONS ($200, $400, $600, $800)
+                {
+                    jeopardyCat: "DEDUCTIONS",
+                    jeopardyVal: 200,
+                    topic: "Jeopardy $200 • Modals of Deduction",
+                    instruction: "Contrast the two clues and speak BOTH modals in order:",
+                    question: "Emma isn't answering her phone. She _______ taking a shower, I'm not sure — but she _______ asleep because she just posted a photo 10 seconds ago!",
+                    options: ["might be / can't be", "must be / might be", "can't be / must be", "might be / must be"],
+                    accepted: ["might be and can't be", "might be can't be", "might be cannot be"],
+                    answerDisplay: "might be / can't be",
+                    feedback: "'I'm not sure' = 50% possibility ('might be'); posting 10 seconds ago makes being asleep impossible ('can't be')!"
+                },
+                {
+                    jeopardyCat: "DEDUCTIONS",
+                    jeopardyVal: 400,
+                    topic: "Jeopardy $400 • Modals of Deduction",
+                    instruction: "Contrast the two clues and speak BOTH modals in order:",
+                    question: "Tom is wearing a heavy winter coat on a freezing day, so he _______ feeling hot! In fact, he _______ freezing right now.",
+                    options: ["can't be / must be", "must be / can't be", "might be / can't be", "can't be / might be"],
+                    accepted: ["can't be and must be", "can't be must be", "cannot be must be"],
+                    answerDisplay: "can't be / must be",
+                    feedback: "Freezing day + heavy winter coat = impossible to feel hot ('can't be') and 99% sure he is cold ('must be')!"
+                },
+                {
+                    jeopardyCat: "DEDUCTIONS",
+                    jeopardyVal: 600,
+                    topic: "Jeopardy $600 • Modals + Indefinite Pronouns",
+                    instruction: "Transform 'The house is dark and all cars are gone: Nobody must be at home' using ANYONE:",
+                    question: "The house is completely dark and all the cars are gone. There _______ _______ at home!",
+                    options: ["can't be anyone", "must be someone", "might be anyone", "can't be someone"],
+                    accepted: ["can't be anyone", "can't be anybody", "cannot be anyone"],
+                    answerDisplay: "can't be anyone",
+                    feedback: "High-level deduction! 'Nobody must be at home' equals 'There CAN'T BE ANYONE at home' (negative modal + anyone)."
+                },
+                {
+                    jeopardyCat: "DEDUCTIONS",
+                    jeopardyVal: 800,
+                    topic: "Jeopardy $800 • Triple Deduction Challenge",
+                    instruction: "Speak the THREE modals in order based on the evidence:",
+                    question: "This _______ Mary's notebook because her name is on the cover! It _______ Leo's, and she _______ looking for it right now, though I'm not sure.",
+                    options: ["must be / can't be / might be", "can't be / must be / might be", "must be / might be / can't be", "might be / can't be / must be"],
+                    accepted: ["must be can't be might be", "must be and can't be and might be"],
+                    answerDisplay: "must be / can't be / might be",
+                    feedback: "Name on cover = certainty ('must be'); therefore it's impossible to be Leo's ('can't be'); 'not sure' = possibility ('might be')!"
+                },
+
+                // CATEGORY 3: TAGS & MIRRORS ($200, $400, $600, $800)
+                {
+                    jeopardyCat: "TAGS & MIRRORS",
+                    jeopardyVal: 200,
+                    topic: "Jeopardy $200 • Past vs. Present Tags",
+                    instruction: "Speak BOTH Question Tags in order (Watch the verb tenses!):",
+                    question: "Australians speak English, _______? And Sarah enjoyed the concert last night, _______?",
+                    options: ["don't they / didn't she", "aren't they / doesn't she", "do they / did she", "don't they / hasn't she"],
+                    accepted: ["don't they and didn't she", "don't they didn't she"],
+                    answerDisplay: "don't they? / didn't she?",
+                    feedback: "'Speak' is Present Simple (+) ➔ 'don't they?'; 'enjoyed' is Past Simple (-ed) ➔ 'didn't she?'."
+                },
+                {
+                    jeopardyCat: "TAGS & MIRRORS",
+                    jeopardyVal: 400,
+                    topic: "Jeopardy $400 • Reflexive vs. Reciprocal",
+                    instruction: "Contrast a single action vs. a mutual action and speak BOTH answers:",
+                    question: "Lisa looked at _______ in the mirror, while her parents always help _______ when they have problems.",
+                    options: ["herself / each other", "each other / themselves", "herself / themselves", "himself / each other"],
+                    accepted: ["herself and each other", "herself each other"],
+                    answerDisplay: "herself / each other",
+                    feedback: "Lisa looking in a mirror reflects back to one person ('herself'); parents helping one another is reciprocal ('each other')!"
+                },
+                {
+                    jeopardyCat: "TAGS & MIRRORS",
+                    jeopardyVal: 600,
+                    topic: "Jeopardy $600 • Subject Pronoun Trap",
+                    instruction: "Combine a Reflexive Pronoun AND a Question Tag in the same sentence:",
+                    question: "My friends and I prepared the entire presentation by _______, _______?",
+                    options: ["ourselves / didn't we", "themselves / didn't they", "ourselves / don't we", "myself / didn't I"],
+                    accepted: ["ourselves and didn't we", "ourselves didn't we"],
+                    answerDisplay: "ourselves / didn't we?",
+                    feedback: "'My friends and I' = WE! So the reflexive is 'ourselves', and since 'prepared' is Simple Past, the tag is 'didn't we?'."
+                },
+                {
+                    jeopardyCat: "TAGS & MIRRORS",
+                    jeopardyVal: 800,
+                    topic: "Jeopardy $800 • Plural 'You' & Present Perfect",
+                    instruction: "Complete the dialogue with the right Reflexive AND Question Tag:",
+                    question: "Kids, you hurt _______ while playing with that ball, _______? And your parents haven't arrived yet, _______?",
+                    options: ["yourselves / didn't you / have they", "yourself / don't you / haven't they", "yourselves / don't you / have they", "themselves / didn't they / haven't they"],
+                    accepted: ["yourselves didn't you have they", "yourselves and didn't you and have they"],
+                    answerDisplay: "yourselves / didn't you? / have they?",
+                    feedback: "'Kids' makes 'you' plural ('yourselves'); 'hurt' here is past ('didn't you?'); 'haven't arrived' (-) flips to 'have they?'!"
+                },
+
+                // CATEGORY 4: MYSTERY COMBO ($200, $400, $600, $800)
+                {
+                    jeopardyCat: "MYSTERY COMBO",
+                    jeopardyVal: 200,
+                    topic: "Jeopardy $200 • Culture & Deductions",
+                    instruction: "Combine Cultural Vocabulary and Modals of Deduction:",
+                    question: "They are bowing to greet each other and speaking Japanese. They _______ visiting Tokyo _______ to save money!",
+                    options: ["must be / on a budget", "can't be / stereotypes", "might be / shake hands", "must be / stereotypes"],
+                    accepted: ["must be on a budget", "must be and on a budget"],
+                    answerDisplay: "must be / on a budget",
+                    feedback: "Bowing + speaking Japanese = strong evidence ('must be'), and saving money while traveling = 'on a budget'!"
+                },
+                {
+                    jeopardyCat: "MYSTERY COMBO",
+                    jeopardyVal: 400,
+                    topic: "Jeopardy $400 • Objects & Indefinite Pronouns",
+                    instruction: "Combine Everyday Objects and Indefinite Pronouns:",
+                    question: "I need a _______ to drive these nails into the wood, but I can't find _______ in the toolbox!",
+                    options: ["hammer / anything", "paint pot / something", "hammer / nothing", "banjo / anyone"],
+                    accepted: ["hammer and anything", "hammer anything"],
+                    answerDisplay: "hammer / anything",
+                    feedback: "Tool for nails = 'hammer'; negative verb ('can't find') requires 'anything'!"
+                },
+                {
+                    jeopardyCat: "MYSTERY COMBO",
+                    jeopardyVal: 600,
+                    topic: "Jeopardy $600 • Culture, Pronouns & Tags",
+                    instruction: "Complete with a Cultural Term AND the matching Question Tag:",
+                    question: "Cultural _______ can create unfair ideas about people, _______?",
+                    options: ["stereotypes / can't they", "stereotypes / don't they", "on a budget / can't it", "bow / can't they"],
+                    accepted: ["stereotypes and can't they", "stereotypes can't they"],
+                    answerDisplay: "stereotypes / can't they?",
+                    feedback: "Unfair ideas = 'stereotypes' (plural = they), and the modal verb 'can' flips to 'can't they?' in the Question Tag!"
+                },
+                {
+                    jeopardyCat: "MYSTERY COMBO",
+                    jeopardyVal: 800,
+                    topic: "Jeopardy $800 • Grand Slam Combo!",
+                    instruction: "Solve all THREE blanks (Object + Reflexive + Question Tag):",
+                    question: "She poured hot tea from the _______ by _______ without spilling a drop, _______?",
+                    options: ["teapot / herself / didn't she", "paint pot / herself / doesn't she", "teapot / himself / didn't she", "teapot / each other / didn't they"],
+                    accepted: ["teapot herself didn't she", "teapot and herself and didn't she"],
+                    answerDisplay: "teapot / herself / didn't she?",
+                    feedback: "Hot tea container = 'teapot'; 'She' = 'herself'; 'poured' (Simple Past +) = 'didn't she?'!"
+                }
+            ],
+
+            3: [ // LEVEL 3: HARD (15-Second Buzzer Tag Showdown: Question Tags & Reflexives vs. Each Other)
+                {
+                    topic: "Buzzer Tag • Question Tags",
+                    instruction: "Beat the 15s clock! Speak the correct Question Tag:",
                     question: "Australians speak English, _______?",
                     options: ["don't they", "aren't they", "do they", "didn't they"],
                     accepted: ["don't they"],
@@ -787,8 +913,8 @@
                     feedback: "Correct! 'Speak' is Present Simple affirmative, and 'Australians' = 'they', so the tag is 'don't they?'."
                 },
                 {
-                    topic: "Question Tags • Slide Matching",
-                    instruction: "Speak the correct Question Tag to complete the sentence:",
+                    topic: "Buzzer Tag • Question Tags",
+                    instruction: "Beat the 15s clock! Speak the correct Question Tag:",
                     question: "You are afraid of flying, _______?",
                     options: ["aren't you", "don't you", "are you", "weren't you"],
                     accepted: ["aren't you"],
@@ -796,8 +922,8 @@
                     feedback: "Spot on! We repeat the verb 'are' in the negative form: 'aren't you?'."
                 },
                 {
-                    topic: "Question Tags • Slide Matching",
-                    instruction: "Speak the correct Question Tag to complete the sentence:",
+                    topic: "Buzzer Tag • Question Tags",
+                    instruction: "Beat the 15s clock! Speak the correct Question Tag:",
                     question: "Sarah enjoyed the concert, _______?",
                     options: ["didn't she", "doesn't she", "hasn't she", "isn't she"],
                     accepted: ["didn't she"],
@@ -805,8 +931,8 @@
                     feedback: "Awesome! 'Enjoyed' is in the Simple Past (-ed), so we use the past auxiliary 'didn't she?'."
                 },
                 {
-                    topic: "Question Tags • Slide Matching",
-                    instruction: "Speak the correct Question Tag to complete the sentence:",
+                    topic: "Buzzer Tag • Question Tags",
+                    instruction: "Beat the 15s clock! Speak the correct Question Tag:",
                     question: "They have visited London, _______?",
                     options: ["haven't they", "don't they", "didn't they", "aren't they"],
                     accepted: ["haven't they"],
@@ -814,8 +940,8 @@
                     feedback: "Exact! 'Have visited' uses the auxiliary 'have', which becomes 'haven't they?'."
                 },
                 {
-                    topic: "Question Tags • Slide Matching",
-                    instruction: "Speak the correct Question Tag to complete the sentence:",
+                    topic: "Buzzer Tag • Question Tags",
+                    instruction: "Beat the 15s clock! Speak the correct Question Tag:",
                     question: "He can't speak Japanese, _______?",
                     options: ["can he", "can't he", "does he", "is he"],
                     accepted: ["can he"],
@@ -823,8 +949,8 @@
                     feedback: "Perfect! Since 'can't' is negative, the Question Tag flips to positive: 'can he?'."
                 },
                 {
-                    topic: "Question Tags • Slide Matching",
-                    instruction: "Speak the correct Question Tag to complete the sentence:",
+                    topic: "Buzzer Tag • Question Tags",
+                    instruction: "Beat the 15s clock! Speak the correct Question Tag:",
                     question: "We are going to the museum, _______?",
                     options: ["aren't we", "don't we", "are we", "haven't we"],
                     accepted: ["aren't we"],
@@ -832,8 +958,8 @@
                     feedback: "Great! 'We are going' uses 'are', so the negative tag is 'aren't we?'."
                 },
                 {
-                    topic: "Question Tags • Slide Matching",
-                    instruction: "Speak the correct Question Tag to complete the sentence:",
+                    topic: "Buzzer Tag • Question Tags",
+                    instruction: "Beat the 15s clock! Speak the correct Question Tag:",
                     question: "Your parents don't like spicy food, _______?",
                     options: ["do they", "don't they", "are they", "did they"],
                     accepted: ["do they"],
@@ -841,8 +967,8 @@
                     feedback: "Well done! 'Your parents don't like' is negative, so the tag is positive: 'do they?'."
                 },
                 {
-                    topic: "Reflexive Pronouns • Slide Exercise",
-                    instruction: "Complete with a Reflexive Pronoun or EACH OTHER:",
+                    topic: "Buzzer Tag • Reflexives",
+                    instruction: "Beat the 15s clock! Complete with a Reflexive Pronoun or EACH OTHER:",
                     question: "Lisa looked at _______ in the mirror before leaving home.",
                     options: ["herself", "himself", "each other", "yourself"],
                     accepted: ["herself"],
@@ -850,8 +976,8 @@
                     feedback: "Correct! Lisa (She) is looking at her own reflection in the mirror: 'herself'."
                 },
                 {
-                    topic: "Reflexive Pronouns • Slide Exercise",
-                    instruction: "Complete with a Reflexive Pronoun or EACH OTHER:",
+                    topic: "Buzzer Tag • Reflexives",
+                    instruction: "Beat the 15s clock! Complete with a Reflexive Pronoun or EACH OTHER:",
                     question: "My friends and I prepared the entire school presentation by _______.",
                     options: ["ourselves", "themselves", "myself", "each other"],
                     accepted: ["ourselves", "by ourselves"],
@@ -859,8 +985,8 @@
                     feedback: "Spot on! 'My friends and I' equals 'We', so the reflexive pronoun is 'ourselves' (by ourselves = without help)."
                 },
                 {
-                    topic: "Reflexive Pronouns • Slide Exercise",
-                    instruction: "Complete with a Reflexive Pronoun or EACH OTHER:",
+                    topic: "Buzzer Tag • Reflexives",
+                    instruction: "Beat the 15s clock! Complete with a Reflexive Pronoun or EACH OTHER:",
                     question: "The students congratulated _______ after winning the competition.",
                     options: ["themselves", "ourselves", "himself", "herself"],
                     accepted: ["themselves", "each other"],
@@ -868,8 +994,8 @@
                     feedback: "Matches the slide key! 'The students' (They) ➔ 'themselves'."
                 },
                 {
-                    topic: "Reflexive Pronouns • Slide Exercise",
-                    instruction: "Complete with a Reflexive Pronoun or EACH OTHER:",
+                    topic: "Buzzer Tag • Reflexives",
+                    instruction: "Beat the 15s clock! Complete with a Reflexive Pronoun or EACH OTHER:",
                     question: "Be careful! You might hurt _______ with that sharp object.",
                     options: ["yourself", "myself", "himself", "each other"],
                     accepted: ["yourself"],
@@ -877,17 +1003,53 @@
                     feedback: "Exact! You are speaking to one person ('You'), so the reflexive form is 'yourself'."
                 },
                 {
-                    topic: "Reflexive Pronouns vs. Each Other",
-                    instruction: "Complete with a Reflexive Pronoun or EACH OTHER:",
+                    topic: "Buzzer Tag • Reflexive vs. Reciprocal",
+                    instruction: "Beat the 15s clock! Complete with a Reflexive Pronoun or EACH OTHER:",
                     question: "My parents always help _______ when they have problems.",
                     options: ["each other", "themselves", "ourselves", "himself"],
                     accepted: ["each other"],
                     answerDisplay: "each other",
                     feedback: "Brilliant! Mom helps Dad and Dad helps Mom (mutual action between two people) = 'each other'!"
+                },
+                {
+                    topic: "Buzzer Tag • Modals of Deduction",
+                    instruction: "Beat the 15s clock! Complete with MUST BE, MIGHT BE, or CAN'T BE:",
+                    question: "The restaurant is full of people and has a huge line outside. It _______ very popular!",
+                    options: ["must be", "might be", "can't be", "can be"],
+                    accepted: ["must be"],
+                    answerDisplay: "must be",
+                    feedback: "Fast and accurate! A full restaurant with a long line is strong evidence: 'must be'."
+                },
+                {
+                    topic: "Buzzer Tag • Indefinite Pronouns",
+                    instruction: "Beat the 15s clock! Speak the missing Indefinite Pronoun:",
+                    question: "The house is completely quiet. I don't think _______ is inside right now.",
+                    options: ["anyone", "someone", "anywhere", "something"],
+                    accepted: ["anyone", "anybody"],
+                    answerDisplay: "anyone / anybody",
+                    feedback: "Great speed! Because of negative 'I don't think...', we use 'anyone' or 'anybody'."
+                },
+                {
+                    topic: "Buzzer Tag • Question Tags",
+                    instruction: "Beat the 15s clock! Speak the correct Question Tag:",
+                    question: "Leo didn't forget his English notebook today, _______?",
+                    options: ["did he", "didn't he", "does he", "has he"],
+                    accepted: ["did he"],
+                    answerDisplay: "did he?",
+                    feedback: "Awesome! Negative Past Simple ('didn't forget') flips to positive 'did he?'."
+                },
+                {
+                    topic: "Buzzer Tag • Question Tags",
+                    instruction: "Beat the 15s clock! Speak the correct Question Tag:",
+                    question: "Julia and Mark will travel on a budget next month, _______?",
+                    options: ["won't they", "will they", "don't they", "aren't they"],
+                    accepted: ["won't they"],
+                    answerDisplay: "won't they?",
+                    feedback: "Spot on! The future auxiliary 'will' flips to 'won't they?'."
                 }
             ],
 
-            4: [ // LEVEL 4: EXPERT (Error Analysis in Question Tags, Dialogue Matching & Full Mastery)
+            4: [ // LEVEL 4: EXPERT (Millionaire Hot Seat: Error Analysis, Dialogue Matching & Full Mastery)
                 {
                     topic: "Expert • Question Tag Analysis",
                     instruction: "Why is 'He can play the guitar, doesn't he?' INCORRECT? Speak the right tag:",
@@ -986,6 +1148,24 @@
                     accepted: ["hasn't he", "has he"],
                     answerDisplay: "hasn't he? (or has he?)",
                     feedback: "Great attention to detail! Both 'hasn't he' (from the slide matching list) and 'has he' are accepted here!"
+                },
+                {
+                    topic: "Expert • Multi-Topic Synthesis",
+                    instruction: "Solve the $1,000,000 synthesis question (Indefinite + Deduction + Tag):",
+                    question: "Nobody left _______ on the table, so this keys _______ be yours, _______?",
+                    options: ["anything / must / mustn't they", "nothing / might / don't they", "anything / can't / can they", "something / must / aren't they"],
+                    accepted: ["anything must mustn't they", "anything can't can they"],
+                    answerDisplay: "anything / must / mustn't they? (or anything / can't / can they?)",
+                    feedback: "Masterclass! Negative 'Nobody' requires 'anything' (never double-negative 'nothing'), followed by a logical modal and matching tag!"
+                },
+                {
+                    topic: "Expert • Reflexive vs. Reciprocal Trap",
+                    instruction: "Distinguish between 'themselves' and 'each other' in context:",
+                    question: "When the two rival players shook hands, they looked at _______ respectfully instead of blaming _______.",
+                    options: ["each other / themselves", "themselves / each other", "himself / themselves", "each other / himself"],
+                    accepted: ["each other and themselves", "each other themselves"],
+                    answerDisplay: "each other / themselves",
+                    feedback: "Player A looked at Player B and vice-versa ('each other'), instead of blaming their own selves ('themselves')!"
                 }
             ]
         };
@@ -1011,6 +1191,10 @@
         // Jeopardy State (Level 2)
         let jeopardyTilesOpened = new Set();
         let waitingForJeopardyPick = false;
+
+        // Buzzer Tag 15s Timer State (Level 3)
+        let buzzerTimerInterval = null;
+        let buzzerTimeLeft = 15;
 
         // Millionaire Lifelines State (Level 4)
         let lifelinesUsed = { fifty: false, poll: false, hint: false };
@@ -1284,8 +1468,76 @@
             }
         }
 
-        // ==================== LEVEL 2: JEOPARDY TV BOARD ====================
+        // ==================== LEVEL 3: 15-SECOND BUZZER TAG TIMER ====================
+        function clearBuzzerTimer() {
+            if (buzzerTimerInterval) {
+                clearInterval(buzzerTimerInterval);
+                buzzerTimerInterval = null;
+            }
+        }
+
+        function startBuzzerTimer() {
+            clearBuzzerTimer();
+            buzzerTimeLeft = 15;
+            updateBuzzerTimerUI();
+
+            buzzerTimerInterval = setInterval(() => {
+                if (isAnswered) {
+                    clearBuzzerTimer();
+                    return;
+                }
+                buzzerTimeLeft--;
+                updateBuzzerTimerUI();
+
+                if (buzzerTimeLeft <= 5 && buzzerTimeLeft > 0) {
+                    playSound('spin');
+                }
+
+                if (buzzerTimeLeft <= 0) {
+                    clearBuzzerTimer();
+                    handleBuzzerTimeout();
+                }
+            }, 1000);
+        }
+
+        function updateBuzzerTimerUI() {
+            const timeDisplay = document.getElementById('buzzer-time-display');
+            const progressBar = document.getElementById('buzzer-progress-bar');
+            if (!timeDisplay || !progressBar) return;
+
+            timeDisplay.textContent = `${buzzerTimeLeft}s`;
+            const pct = Math.max(0, (buzzerTimeLeft / 15) * 100);
+            progressBar.style.width = `${pct}%`;
+
+            if (buzzerTimeLeft <= 5) {
+                timeDisplay.className = "text-lg md:text-xl font-extrabold text-rose-400 font-mono animate-ping";
+            } else if (buzzerTimeLeft <= 9) {
+                timeDisplay.className = "text-lg md:text-xl font-extrabold text-amber-300 font-mono";
+            } else {
+                timeDisplay.className = "text-lg md:text-xl font-extrabold text-emerald-400 font-mono";
+            }
+        }
+
+        function lockOptionButtons() {
+            const buttons = document.querySelectorAll('#q-options-container button');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-40', 'cursor-not-allowed', 'pointer-events-none');
+            });
+        }
+
+        function handleBuzzerTimeout() {
+            if (isAnswered) return;
+            lockOptionButtons();
+            const toast = document.getElementById('game-show-toast');
+            toast.innerHTML = `⏰ <strong>TIME'S UP (0s)!</strong> The options are now locked! (Teacher can use <em>Teacher Override</em> if the class spoke in time).`;
+            toast.classList.remove('hidden');
+            evaluateAnswer("⏰ TIME EXPIRED (15s)", "Shot Clock Timeout");
+        }
+
+        // ==================== LEVEL 2: SUPER 4x4 JEOPARDY TV BOARD ====================
         function renderJeopardyBoard() {
+            clearBuzzerTimer();
             const boardStage = document.getElementById('jeopardy-board-stage');
             const activeStage = document.getElementById('active-question-stage');
             const grid = document.getElementById('jeopardy-grid');
@@ -1294,23 +1546,23 @@
             activeStage.classList.add('hidden');
             waitingForJeopardyPick = true;
 
-            if (jeopardyTilesOpened.size >= 9) {
+            if (jeopardyTilesOpened.size >= 16) {
                 jeopardyTilesOpened.clear();
             }
 
-            const categories = ["SOME / ANY", "DEDUCTIONS", "MYSTERY MIX"];
-            const values = [200, 400, 600];
+            const categories = ["SOME / ANY TRAPS", "DEDUCTIONS", "TAGS & MIRRORS", "MYSTERY COMBO"];
+            const values = [200, 400, 600, 800];
             grid.innerHTML = '';
 
-            // Headers
+            // 4 Column Category Headers
             categories.forEach(cat => {
                 const h = document.createElement('div');
-                h.className = "bg-blue-900/90 border border-blue-400/50 rounded-xl p-2 text-xs md:text-sm font-extrabold text-white uppercase tracking-wider";
+                h.className = "bg-blue-900/95 border-2 border-blue-400/60 rounded-xl p-2.5 text-[11px] md:text-xs font-extrabold text-white uppercase tracking-wider flex items-center justify-center shadow";
                 h.textContent = cat;
                 grid.appendChild(h);
             });
 
-            // 3x3 Prize Tiles
+            // 4x4 Prize Tiles (16 tiles total)
             values.forEach((val, rIdx) => {
                 categories.forEach((cat, cIdx) => {
                     const tileKey = `${rIdx}-${cIdx}`;
@@ -1318,11 +1570,12 @@
                     const btn = document.createElement('button');
                     btn.disabled = opened;
                     if (opened) {
-                        btn.className = "p-4 rounded-xl bg-slate-900/70 border border-slate-800 text-slate-600 font-extrabold text-xl";
+                        btn.className = "p-3.5 md:p-4 rounded-xl bg-slate-900/70 border border-slate-800 text-slate-600 font-extrabold text-lg md:text-xl";
                         btn.textContent = "—";
                     } else {
-                        btn.className = "jeopardy-tile p-4 rounded-xl text-amber-300 font-extrabold text-xl md:text-2xl";
-                        btn.textContent = `$${val}`;
+                        const isDailyDouble = (val === 800);
+                        btn.className = "jeopardy-tile p-3.5 md:p-4 rounded-xl text-amber-300 font-extrabold text-lg md:text-2xl flex flex-col items-center justify-center";
+                        btn.innerHTML = `<span>$${val}</span>${isDailyDouble ? '<span class="text-[10px] text-cyan-200 uppercase tracking-widest mt-0.5">★ Master</span>' : ''}`;
                         btn.onclick = () => selectJeopardyTile(tileKey, cat, val);
                     }
                     grid.appendChild(btn);
@@ -1339,27 +1592,35 @@
             document.getElementById('jeopardy-board-stage').classList.add('hidden');
             document.getElementById('active-question-stage').classList.remove('hidden');
 
-            // Filter Level 2 question matching chosen category if possible
             const pool = questionBank[2];
             let used = usedQuestionIndices[2];
             if (used.size >= pool.length) used.clear();
 
-            let matchingIndices = [];
+            // 1. Try exact match for Category + Dollar Value
+            let exactIndices = [];
             pool.forEach((q, idx) => {
-                if (!used.has(idx)) {
-                    if (categoryName === "SOME / ANY" && q.topic.includes("Indefinite")) matchingIndices.push(idx);
-                    else if (categoryName === "DEDUCTIONS" && q.topic.includes("Modals")) matchingIndices.push(idx);
-                    else if (categoryName === "MYSTERY MIX") matchingIndices.push(idx);
+                if (!used.has(idx) && q.jeopardyCat === categoryName && q.jeopardyVal === dollarValue) {
+                    exactIndices.push(idx);
                 }
             });
 
-            if (matchingIndices.length === 0) {
+            // 2. Fallback to same Category or same Dollar Value if already seen
+            if (exactIndices.length === 0) {
+                pool.forEach((q, idx) => {
+                    if (!used.has(idx) && (q.jeopardyCat === categoryName || q.jeopardyVal === dollarValue)) {
+                        exactIndices.push(idx);
+                    }
+                });
+            }
+
+            // 3. Final fallback to any unseen question in Level 2
+            if (exactIndices.length === 0) {
                 for (let i = 0; i < pool.length; i++) {
-                    if (!used.has(i)) matchingIndices.push(i);
+                    if (!used.has(i)) exactIndices.push(i);
                 }
             }
 
-            const chosenIdx = matchingIndices[Math.floor(Math.random() * matchingIndices.length)];
+            const chosenIdx = exactIndices[Math.floor(Math.random() * exactIndices.length)];
             used.add(chosenIdx);
             currentQuestion = pool[chosenIdx];
             renderActiveQuestionDetails();
@@ -1432,6 +1693,7 @@
 
         // ==================== MASTER QUESTION LOADER ====================
         function loadQuestion() {
+            clearBuzzerTimer();
             isAnswered = false;
             lastStateSnapshot = null;
             updateProgressUI();
@@ -1443,7 +1705,7 @@
             document.getElementById('manual-answer-input').value = '';
             document.getElementById('speech-transcript').textContent = '"..."';
 
-            // If Level 2 (Jeopardy), show the Jeopardy Category/Dollar Grid first!
+            // If Level 2 (Jeopardy), show the 4x4 Jeopardy Category/Dollar Grid first!
             if (currentLevel === 2) {
                 renderJeopardyBoard();
                 return;
@@ -1466,19 +1728,31 @@
 
             const hangmanStage = document.getElementById('hangman-stage');
             const millionaireBar = document.getElementById('millionaire-lifelines');
+            const buzzerTimerStage = document.getElementById('buzzer-timer-stage');
 
             // Toggle Level-Specific Game Show Widgets
             if (currentLevel === 1) {
+                clearBuzzerTimer();
                 hangmanStage.classList.remove('hidden');
                 millionaireBar.classList.add('hidden');
+                buzzerTimerStage.classList.add('hidden');
                 initHangmanForQuestion(currentQuestion);
-            } else if (currentLevel === 4) {
-                hangmanStage.classList.add('hidden');
-                millionaireBar.classList.remove('hidden');
-                updateLifelineButtons();
-            } else {
+            } else if (currentLevel === 3) {
                 hangmanStage.classList.add('hidden');
                 millionaireBar.classList.add('hidden');
+                buzzerTimerStage.classList.remove('hidden');
+                startBuzzerTimer();
+            } else if (currentLevel === 4) {
+                clearBuzzerTimer();
+                hangmanStage.classList.add('hidden');
+                millionaireBar.classList.remove('hidden');
+                buzzerTimerStage.classList.add('hidden');
+                updateLifelineButtons();
+            } else {
+                clearBuzzerTimer();
+                hangmanStage.classList.add('hidden');
+                millionaireBar.classList.add('hidden');
+                buzzerTimerStage.classList.add('hidden');
             }
 
             // Shuffle options for display
@@ -1562,6 +1836,8 @@
             }) || normalizeText(currentQuestion.options[0]) === cleaned;
 
             isAnswered = true;
+            clearBuzzerTimer();
+            lockOptionButtons();
 
             // If Level 1 Hangman, reveal all letters on the board when answered
             if (currentLevel === 1) {
@@ -1699,6 +1975,7 @@
         }
 
         function resetFullGame() {
+            clearBuzzerTimer();
             currentLevel = 1;
             levelProgress = { 1: 0, 2: 0, 3: 0, 4: 0 };
             totalCorrect = 0;
