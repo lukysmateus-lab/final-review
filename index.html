@@ -339,6 +339,21 @@
 
                         <!-- STAGE B: ACTIVE QUESTION DISPLAY -->
                         <div id="active-question-stage">
+                            <!-- Question Text & Prize Header -->
+                            <div class="mb-5 bg-slate-950/70 border border-slate-800 rounded-2xl p-4 md:p-5">
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <p id="q-instruction" class="text-indigo-300 text-xs md:text-sm font-bold uppercase tracking-wider">
+                                        Read and speak the correct answer:
+                                    </p>
+                                    <span id="question-prize-tag" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 font-extrabold text-xs border border-amber-500/30">
+                                        +$200
+                                    </span>
+                                </div>
+                                <h2 id="q-text" class="text-xl md:text-3xl font-extrabold text-white leading-snug">
+                                    Loading question...
+                                </h2>
+                            </div>
+
                             <!-- FORMAT 3 WIDGET: 15-SECOND BUZZER COUNTDOWN BAR (Level 3) -->
                             <div id="buzzer-timer-stage" class="hidden mb-4 bg-slate-950/90 border-2 border-amber-500/50 rounded-2xl p-3.5 shadow-lg">
                                 <div class="flex items-center justify-between mb-2">
@@ -1197,6 +1212,7 @@
         let currentFontScale = 0;
         let lastStateSnapshot = null;
         let tvShowMoney = 0;
+        let currentQuestionPrize = 200;
         // Hangman / Wheel of Fortune State (Level 1)
         let hangmanTargetWord = "";
         let hangmanGuessedLetters = new Set();
@@ -1350,6 +1366,59 @@
                 3: { text: "⚡ Show 3 • Buzzer Tag Showdown", cls: "px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-300 font-extrabold text-xs md:text-sm border border-amber-500/40 uppercase tracking-wider" },
                 4: { text: "👑 Show 4 • Millionaire Hot Seat", cls: "px-3.5 py-1.5 rounded-full bg-rose-500/20 text-rose-300 font-extrabold text-xs md:text-sm border border-rose-500/40 uppercase tracking-wider" }
             };
+
+            const badgeEl = document.getElementById('show-format-badge');
+            if (badgeEl && showBadges[currentLevel]) {
+                badgeEl.textContent = showBadges[currentLevel].text;
+                badgeEl.className = showBadges[currentLevel].cls;
+            }
+
+            const statusCounter = document.getElementById('q-status-counter');
+            if (statusCounter) {
+                statusCounter.textContent = `Level ${levelNames[currentLevel]}: ${levelProgress[currentLevel]} of 5 Correct`;
+            }
+
+            const tvScoreEl = document.getElementById('tv-score');
+            if (tvScoreEl) {
+                tvScoreEl.textContent = `$${tvShowMoney}`;
+            }
+
+            const activeColors = {
+                1: "border-emerald-500 bg-emerald-500/10",
+                2: "border-cyan-500 bg-cyan-500/10",
+                3: "border-amber-500 bg-amber-500/10",
+                4: "border-rose-500 bg-rose-500/10"
+            };
+            const dotColors = {
+                1: "bg-emerald-400",
+                2: "bg-cyan-400",
+                3: "bg-amber-400",
+                4: "bg-rose-400"
+            };
+
+            for (let lvl = 1; lvl <= 4; lvl++) {
+                const badge = document.getElementById(`lvl-badge-${lvl}`);
+                const dotsContainer = document.getElementById(`lvl-dots-${lvl}`);
+                if (!badge || !dotsContainer) continue;
+
+                if (lvl === currentLevel) {
+                    badge.className = `p-3 rounded-2xl border-2 ${activeColors[lvl]} text-center transition-all shadow-lg scale-105`;
+                } else if (lvl < currentLevel) {
+                    badge.className = "p-3 rounded-2xl border-2 border-emerald-500/50 bg-slate-800/80 text-center opacity-90 transition-all";
+                } else {
+                    badge.className = "p-3 rounded-2xl border-2 border-slate-700 bg-slate-800/50 text-center opacity-60 transition-all";
+                }
+
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < 5; i++) {
+                    const dot = document.createElement('span');
+                    const filled = i < levelProgress[lvl] || lvl < currentLevel;
+                    dot.className = `w-2.5 h-2.5 rounded-full ${filled ? dotColors[lvl] : 'bg-slate-700'}`;
+                    dotsContainer.appendChild(dot);
+                }
+            }
+        }
+
         // ==================== LEVEL 1: WHEEL OF FORTUNE / HANGMAN MYSTERY ====================
         function initHangmanForQuestion(q) {
             // Clean primary answer for letter board (if "mouse / rat", use "MOUSE")
